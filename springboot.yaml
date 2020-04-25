@@ -8,28 +8,28 @@ items:
   kind: DeploymentConfig
   metadata:
     labels:
-      app: brown-redcloud3-spring-petclinic
-      chart: brown-redcloud3-spring-petclinic-0.0.1
+      app: brown-redcloud3-spring-petclinic-__BRANCH__
+      chart: brown-redcloud3-spring-petclinic-__BRANCH__-0.0.1
       heritage: Tiller
-      release: brown-redcloud3-spring-petclinic
-    name: brown-redcloud3-spring-petclinic
+      release: brown-redcloud3-spring-petclinic-__BRANCH__
+    name: brown-redcloud3-spring-petclinic-__BRANCH__
     namespace: __PROJECT__
   spec:
     replicas: 1
     selector:
-      deploymentconfig: brown-redcloud3-spring-petclinic
+      deploymentconfig: brown-redcloud3-spring-petclinic-__BRANCH__
     template:
       metadata:
         labels:
-          app: brown-redcloud3-spring-petclinic
-          release: brown-redcloud3-spring-petclinic
-          deploymentconfig: brown-redcloud3-spring-petclinic
+          app: brown-redcloud3-spring-petclinic-__BRANCH__
+          release: brown-redcloud3-spring-petclinic-__BRANCH__
+          deploymentconfig: brown-redcloud3-spring-petclinic-__BRANCH__
           version: v1
       spec:
         imagePullSecrets:
         - name: docker-registry-credentials
         containers:
-          - name: brown-redcloud3-spring-petclinic
+          - name: brown-redcloud3-spring-petclinic-__BRANCH__
             image: "__IMAGE_TAG__"
             imagePullPolicy: "Always"
             ports:
@@ -51,12 +51,12 @@ items:
   kind: Service
   metadata:
     labels:
-      app: brown-redcloud3-spring-petclinic
-      chart: brown-redcloud3-spring-petclinic-0.0.1
+      app: brown-redcloud3-spring-petclinic-__BRANCH__
+      chart: brown-redcloud3-spring-petclinic-__BRANCH__-0.0.1
       heritage: Tiller
-      release: brown-redcloud3-spring-petclinic
+      release: brown-redcloud3-spring-petclinic-__BRANCH__
       version: v1
-    name: brown-redcloud3-spring-petclinic
+    name: brown-redcloud3-spring-petclinic-__BRANCH__
     namespace: __PROJECT__
   spec:
     type: "ClusterIP"
@@ -66,8 +66,8 @@ items:
         protocol: TCP
         targetPort: 8080
     selector:
-      app: brown-redcloud3-spring-petclinic
-      release: brown-redcloud3-spring-petclinic
+      app: brown-redcloud3-spring-petclinic-__BRANCH__
+      release: brown-redcloud3-spring-petclinic-__BRANCH__
 
 - apiVersion: extensions/v1beta1
   kind: Ingress
@@ -75,16 +75,16 @@ items:
     annotations:
       haproxy.router.openshift.io/timeout: 11m
     labels:
-      app: __PROJECT__-brown-redcloud3-spring-petclinic
-    name: __PROJECT__-brown-redcloud3-spring-petclinic
+      app: __PROJECT__-brown-redcloud3-spring-petclinic-__BRANCH__
+    name: __PROJECT__-brown-redcloud3-spring-petclinic-__BRANCH__
     namespace: istio-system
   spec:
     tls:
     - hosts:
-      - "brown-redcloud3-spring-petclinic.__PROJECT__.brown.perspectatechdemos.com"
+      - "brown-redcloud3-spring-petclinic-__BRANCH__.__PROJECT__.brown.perspectatechdemos.com"
       secretName: "brown-perspectatechdemos-com-crt"
     rules:
-    - host: brown-redcloud3-spring-petclinic.__PROJECT__.brown.perspectatechdemos.com
+    - host: brown-redcloud3-spring-petclinic-__BRANCH__.__PROJECT__.brown.perspectatechdemos.com
       http:
         paths:
         - path: /
@@ -95,11 +95,11 @@ items:
 - apiVersion: networking.istio.io/v1alpha3
   kind: VirtualService
   metadata:
-    name: brown-redcloud3-spring-petclinic
+    name: brown-redcloud3-spring-petclinic-__BRANCH__
     namespace: __PROJECT__
   spec:
     hosts:
-    - "brown-redcloud3-spring-petclinic.__PROJECT__.brown.perspectatechdemos.com"
+    - "brown-redcloud3-spring-petclinic-__BRANCH__.__PROJECT__.brown.perspectatechdemos.com"
     gateways:
     - __PROJECT__-istio-gateway
     http:
@@ -108,17 +108,17 @@ items:
           prefix: /
       route:
       - destination:
-          host: brown-redcloud3-spring-petclinic
+          host: brown-redcloud3-spring-petclinic-__BRANCH__
           port:
             number: 80
 
 - apiVersion: networking.istio.io/v1alpha3
   kind: DestinationRule
   metadata:
-    name: brown-redcloud3-spring-petclinic
+    name: brown-redcloud3-spring-petclinic-__BRANCH__
     namespace: __PROJECT__
   spec:
-    host: brown-redcloud3-spring-petclinic
+    host: brown-redcloud3-spring-petclinic-__BRANCH__
     subsets:
     - name: v1
       labels:
